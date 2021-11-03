@@ -1,4 +1,4 @@
-# 🚀 项目使用 [Create React Nav](https://github.com/facebook/create-react-app).
+# 🚀 项目使用 [Create React App](https://github.com/facebook/create-react-app).
 
 ## 快速安装
 

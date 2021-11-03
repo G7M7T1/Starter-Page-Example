@@ -10,7 +10,7 @@ function IpGet() {
   const [countryCode, setcountryCode] = useState("");
   const [countryStateName, setcountryStateName] = useState("");
 
-  const WeatherKey = process.env.REACT_APP_WEATHERKEY;
+  // const WeatherKey = process.env.REACT_APP_WEATHERKEY;
 
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
@@ -19,14 +19,13 @@ function IpGet() {
     setcityName(res.data.city);
     setcountryCode(res.data.country_code);
     setcountryStateName(res.data.state);
-    const getWeather = async () => {
-      const WeatherUrl = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryStateName}&appid=${WeatherKey}`
-      );
-      console.log(WeatherUrl);
-    };
-    getWeather();
   };
+
+  // const getWeather = async () => {
+  //   const WeatherUrl = await axios.get(
+  //     `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryStateName}&appid=${WeatherKey}`
+  //   );
+  // };
 
   useEffect(() => {
     getData();

@@ -3,41 +3,50 @@ import axios from "axios";
 require("dotenv").config();
 
 function IpGet() {
-  // IP in state
-  const [ip, setIP] = useState("");
-  const [countryName, setcountryName] = useState("");
-  const [cityName, setcityName] = useState("");
-  const [countryCode, setcountryCode] = useState("");
-  const [countryStateName, setcountryStateName] = useState("");
+  const [countryName, setCountryName] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [countryStateName, setCountryStateName] = useState("");
+  const [cityTemp, setCityTemp] = useState("");
+  const [cityFeelLike, setCityFeelLike] = useState("");
 
-  // const WeatherKey = process.env.REACT_APP_WEATHERKEY;
+  const weatherKey = process.env.REACT_APP_WEATHERKEY;
 
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    setIP(res.data.IPv4);
-    setcountryName(res.data.country_name);
-    setcityName(res.data.city);
-    setcountryCode(res.data.country_code);
-    setcountryStateName(res.data.state);
+    setCountryName(res.data.country_name);
+    setCityName(res.data.city);
+    setCountryCode(res.data.country_code);
+    setCountryStateName(res.data.state);
   };
 
-  // const getWeather = async () => {
-  //   const WeatherUrl = await axios.get(
-  //     `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryStateName}&appid=${WeatherKey}`
-  //   );
-  // };
+  const getWeather = async () => {
+    if (!cityName || !countryStateName || !weatherKey) return;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryStateName}&appid=${weatherKey}`;
+    const weatherData = await axios.get(weatherUrl);
+
+    console.log(weatherData.data);
+
+    setCityTemp(Math.ceil(weatherData.data.main.temp - 273.15));
+    setCityFeelLike(Math.ceil(weatherData.data.main.feels_like - 273.15));
+  };
 
   useEffect(() => {
     getData();
-  }, []);
+  });
+
+  useEffect(() => {
+    getWeather();
+  }, [cityName, countryStateName]);
 
   return (
     <div className="IpGet">
-      <h4>{ip}</h4>
       <h4>{countryName}</h4>
       <h4>{countryCode}</h4>
       <h4>{countryStateName}</h4>
       <h4>{cityName}</h4>
+      <h4>{cityTemp}°C</h4>
+      <h4>{cityFeelLike}°C</h4>
     </div>
   );
 }

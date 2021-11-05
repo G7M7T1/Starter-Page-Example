@@ -1,7 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Oswald", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  background-image: url(../Img/bg4.jpg);
+  height: 100%;
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.TopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2rem;
+}
+
+.Weatherbar {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+.Weatherbar h1 {
+  font-weight: 900;
+  font-size: 2rem;
+}
+.Weatherbar h1 span {
+  font-weight: 300;
+}
+
+.CityBar {
+  color: #b3cbcb;
+}
+
+.TimeBar {
+  color: white;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 900;
+  font-size: 3rem;
+  margin-top: 2rem;
 }
 
 /*# sourceMappingURL=index.css.map */

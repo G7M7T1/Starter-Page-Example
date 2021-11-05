@@ -3,32 +3,46 @@ import axios from "axios";
 require("dotenv").config();
 
 function IpGet() {
-  const [countryName, setCountryName] = useState("");
   const [cityName, setCityName] = useState("");
-  const [countryCode, setCountryCode] = useState("");
   const [countryStateName, setCountryStateName] = useState("");
   const [cityTemp, setCityTemp] = useState("");
-  const [cityFeelLike, setCityFeelLike] = useState("");
+  const [iconCode, setIconCode] = useState("");
+  const [currentHour, setCurrentHour] = useState("");
+  const [currentMinute, setCurrentMinute] = useState("");
+  const [currentSecond, setCurrentSecond] = useState("");
 
   const weatherKey = process.env.REACT_APP_WEATHERKEY;
 
   const getData = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    setCountryName(res.data.country_name);
     setCityName(res.data.city);
-    setCountryCode(res.data.country_code);
     setCountryStateName(res.data.state);
   };
 
+  function ChckeTime() {
+    const currentTime = new Date();
+    if (currentTime.getSeconds() < 10) {
+      setCurrentSecond("0" + currentTime.getSeconds());
+    } else {
+      setCurrentSecond(currentTime.getSeconds());
+    }
+
+    if (currentTime.getMinutes() < 10) {
+      setCurrentMinute("0" + currentTime.getMinutes());
+    } else {
+      setCurrentMinute(currentTime.getMinutes());
+    }
+
+    setCurrentHour(currentTime.getHours());
+  }
+  setInterval(ChckeTime, 1000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getWeather = async () => {
     if (!cityName || !countryStateName || !weatherKey) return;
     const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryStateName}&appid=${weatherKey}`;
     const weatherData = await axios.get(weatherUrl);
-
-    console.log(weatherData.data);
-
+    setIconCode(weatherData.data.weather[0].icon);
     setCityTemp(Math.ceil(weatherData.data.main.temp - 273.15));
-    setCityFeelLike(Math.ceil(weatherData.data.main.feels_like - 273.15));
   };
 
   useEffect(() => {
@@ -37,16 +51,33 @@ function IpGet() {
 
   useEffect(() => {
     getWeather();
-  }, [cityName, countryStateName]);
+  }, [cityName, countryStateName, getWeather]);
 
   return (
     <div className="IpGet">
-      <h4>{countryName}</h4>
-      <h4>{countryCode}</h4>
-      <h4>{countryStateName}</h4>
-      <h4>{cityName}</h4>
-      <h4>{cityTemp}°C</h4>
-      <h4>{cityFeelLike}°C</h4>
+      <div className="TopBar">
+        <div className="Weatherbar">
+          <img
+            src={`http://openweathermap.org/img/wn/${iconCode}@2x.png`}
+            alt="Weather"
+          />
+          <h1>
+            {cityTemp}
+            <span> °C</span>
+          </h1>
+        </div>
+
+        <div className="CityBar">
+          <h4>
+            {cityName}, {countryStateName}
+          </h4>
+        </div>
+      </div>
+      <div className="TimeBar">
+        <h1>
+          {currentHour}:{currentMinute}:{currentSecond}
+        </h1>
+      </div>
     </div>
   );
 }

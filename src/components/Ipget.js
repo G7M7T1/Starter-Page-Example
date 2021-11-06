@@ -26,13 +26,11 @@ function IpGet() {
     } else {
       setCurrentSecond(currentTime.getSeconds());
     }
-
     if (currentTime.getMinutes() < 10) {
       setCurrentMinute("0" + currentTime.getMinutes());
     } else {
       setCurrentMinute(currentTime.getMinutes());
     }
-
     setCurrentHour(currentTime.getHours());
   }
   setInterval(ChckeTime, 1000);
